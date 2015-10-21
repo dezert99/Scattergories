@@ -30,58 +30,54 @@ function joinLobby(){
     }
   });  
 }    
-function createLobby(){
+function createLobby() {
   var ses = Parse.Object.extend("Session");
-    var query = new Parse.Query(ses);
-    var exists = false;
-    query.equalTo("sessionName", document.getElementById("lobby").value);
-    query.find({
+  var query = new Parse.Query(ses);
+  var exists = false;
+  query.equalTo("sessionName", document.getElementById("lobby").value);
+  query.find({
     success: function(results) {
-      console.log("Successfully retrieved " + results.length );
-      if(results.length!=0){
+      console.log("Successfully retrieved " + results.length);
+      if (results.length != 0) {
         alert("Session already exists");
-        exists = true;
+        return;
       }
-    },
-    error: function(error) {
-      alert("Error: " + error.code + " " + error.message);
-    }
-  });  
-  if(exists==false){
-      session.set("sessionName",document.getElementById("lobby").value);
+      session.set("sessionName", document.getElementById("lobby").value);
       var Players = Parse.Object.extend("Player");
       var query = new Parse.Query(Players);
       query.equalTo("Name", "zzz");
       query.find({
-
-      success: function(results) {
-        var query2 = new Parse.Query(Players);
-        query2.get(results[0].id, {
-          success: function(k) {
-            console.log(k);
-            session.add("Players", k);
-           },
-           error: function(object, error) {
+        success: function(results) {
+          var query2 = new Parse.Query(Players);
+          query2.get(results[0].id, {
+            success: function(k) {
+              console.log(k);
+              session.add("Players", k);
+            },
+            error: function(object, error) {
               // The object was not retrieved successfully.
               // error is a Parse.Error with an error code and message.
             }
+          });
+        },
+        error: function(error) {
+          alert("Error: " + error.code + " " + error.message);
+        }
       });
-      },
-      error: function(error) {
-        alert("Error: " + error.code + " " + error.message);
-      }
-      });  
-      
       session.save(null, {
-       success: function(object) {
-         $(".success").show();
-       },
-       error: function(model, error) {
-        $(".error").show();
-       }
-      }); 
-  }
-}  
+        success: function(object) {
+          $(".success").show();
+        },
+        error: function(model, error) {
+          $(".error").show();
+        }
+      });
+    },
+    error: function(error) {
+      alert("Error: " + error.code + " " + error.message);
+    }
+  });
+}
 function test(){
  var ses = Parse.Object.extend("Session");
     var query = new Parse.Query(ses);
