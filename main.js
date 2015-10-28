@@ -20,11 +20,25 @@ function joinLobby(){
     var query = new Parse.Query(ses);
     query.equalTo("Name", document.getElementById("lobby").value);
     query.include("Creator");
+    query.include("Players");
     query.find({
     success: function(results) {
       console.log("Successfully retrieved " + results.length );
       // Do something with the returned Parse.Object values
       session = results[0];
+      player.set("ansID",session.get("Players").length);
+      console.log("Set");
+      console.log(session.get("Players").length);
+      player.save(null, {
+        success: function(object) {
+          $(".success").show();
+          console.log("Player saved...");
+        },
+        error: function(model, error) {
+          $(".error").show();
+          console.log("Player failed to save. Error code: "+error.code);
+        }
+      });      
       addPlayer(session,player);
       console.log("session joined: "+session.get("Name"));
       console.log("The creator is: "+session.get("Creator").get("Name"));
@@ -34,6 +48,19 @@ function joinLobby(){
     }
   });  
 }    
+function sendAnswers(answers, session){
+	var ansID = player.get("ansID");
+	session.set("Players"[ansID],ansID);
+	player.save(null, {
+        success: function(object) {
+          $(".success").show();
+        },
+        error: function(model, error) {
+          $(".error").show();
+          console.log("Player failed to save. Error code: "+error.code);
+        }
+      });      
+}
 function createLobby() {
   var ses = Parse.Object.extend("Session");
   var query = new Parse.Query(ses);
@@ -49,6 +76,17 @@ function createLobby() {
       }
       session.set("Creator", player);
       session.set("Name", document.getElementById("lobby").value);
+      player.set("ansID",0);
+      player.save(null, {
+        success: function(object) {
+          $(".success").show();
+          console.log("Player saved...");
+        },
+        error: function(model, error) {
+          $(".error").show();
+          console.log("Player failed to save. Error code: "+error.code);
+        }
+      });      
       addPlayer(session, player);     
     },
     error: function(error) {
