@@ -48,18 +48,26 @@ function joinLobby(){
     }
   });  
 }    
-function sendAnswers(answers, session){
-	var ansID = player.get("ansID");
-	session.set("Players"[ansID],ansID);
-	player.save(null, {
-        success: function(object) {
-          $(".success").show();
-        },
-        error: function(model, error) {
-          $(".error").show();
-          console.log("Player failed to save. Error code: "+error.code);
-        }
-      });      
+var crap;
+function sendAnswers(){
+	//var ansID = player.get("ansID");
+	var answers=[];
+	for(var x = 1; x<=12; x++){
+		answers.push(document.getElementById(""+x).value);
+	}
+	//var answers = [document.getElementById("1").value,document.getElementById("2").value,document.getElementById("3"),document.getElementById("4"),document.getElementById("5"),document.getElementById("6"),document.getElementById("7"),document.getElementById("8"),document.getElementById("9"),document.getElementById("10"),document.getElementById("11"),document.getElementById("12")];
+	session.add("Answers", answers);
+    session.save(null, {
+      success: function(object) {
+        $(".success").show();
+        crap = object;
+        console.log("Answers sent");
+      },
+      error: function(model, error) {
+        $(".error").show();
+        console.log("Session failed to create. Error code: "+error.code);
+      }
+    });  
 }
 function createLobby() {
   var ses = Parse.Object.extend("Session");
@@ -74,6 +82,7 @@ function createLobby() {
         alert("Session already exists");
         return;
       }
+
       session.set("Creator", player);
       session.set("Name", document.getElementById("lobby").value);
       player.set("ansID",0);
@@ -97,6 +106,7 @@ function createLobby() {
 function addPlayer(session, player){
       console.log("Creating session...");
       session.add("Players", player);
+      session.set("userCount",session.get("userCount")+1);
       session.save(null, {
         success: function(object) {
           $(".success").show();
@@ -127,26 +137,26 @@ function test(){
     }
   });  
 }
-function sendAnswers(){
-  var answers = [document.getElementById("1").value,
-  document.getElementById("2").value,
-  document.getElementById("3").value,
-  document.getElementById("4").value,
-  document.getElementById("5").value,
-  document.getElementById("6").value,
-  document.getElementById("7").value,
-  document.getElementById("8").value,
-  document.getElementById("9").value,
-  document.getElementById("10").value,
-  document.getElementById("11").value,
-  document.getElementById("12").value,];
-  user.set("Answers",answers);
-      user.save(null, {
-       success: function(object) {
-         $(".success").show();
-       },
-       error: function(model, error) {
-        $(".error").show();
-       }
-      });  
-}
+// function sendAnswers(){
+//   var answers = [document.getElementById("1").value,
+//   document.getElementById("2").value,
+//   document.getElementById("3").value,
+//   document.getElementById("4").value,
+//   document.getElementById("5").value,
+//   document.getElementById("6").value,
+//   document.getElementById("7").value,
+//   document.getElementById("8").value,
+//   document.getElementById("9").value,
+//   document.getElementById("10").value,
+//   document.getElementById("11").value,
+//   document.getElementById("12").value,];
+//   user.set("Answers",answers);
+//       user.save(null, {
+//        success: function(object) {
+//          $(".success").show();
+//        },
+//        error: function(model, error) {
+//         $(".error").show();
+//        }
+//       });  
+// }
