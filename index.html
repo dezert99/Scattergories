@@ -1,55 +1,88 @@
 <!DOCTYPE html>
 <html>
   <head>
-<meta charset="utf-8">
-  <meta name="description" content="My Parse App">
-  <meta name="viewport" content="width=device-width">
-  <link rel="stylesheet" href="css/reset.css">
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
-  <script type="text/javascript" src="main.js"></script>
+	<meta charset="utf-8">
+	<meta name="description" content="My Parse App">
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/main.css">
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+	<script type="text/javascript" src="mustache.js-master/mustache.js"></script>
+	<script type="text/javascript" src="main.js"></script>
+	<script>
+		$(document).ready(function(){
+			$("#inSes").hide();
+		});
+	</script>
   </head>
   <body>
     <h1>Welcome to Scatagories!</h1>
-    <h2>Enter the name of the lobby you want to join<h2>
-    <input type='text' id="lobby">
-    <button onclick="createLobby()">CREATE</button>
-    <button onclick="joinLobby()">JOIN</button>
-    <br style="float:clear">
-    <div class="u-ans" style ="display:inline-block; float:left" width="49%">
-        <ol>
-          <li><input type="text" id="1"> </li>
-          <li><input type="text" id="2"> </li>
-          <li><input type="text" id="3"> </li>
-          <li><input type="text" id="4"> </li>
-          <li><input type="text" id="5"> </li>
-          <li><input type="text" id="6"> </li>
-          <li><input type="text" id="7"> </li>
-          <li><input type="text" id="8"> </li>
-          <li><input type="text" id="9"> </li>
-          <li><input type="text" id="10"> </li>
-          <li><input type="text" id="11"> </li>
-          <li><input type="text" id="12"> </li>
-        </ol>
-    </div>
-    <div class="cat" style ="display:inline-block; float:left" width="49%">
-    	<ol>
-    		<li><p>1) Things in a picnic basket</p></li>
-    		<li><p>1) Things in a picnic basket</p></li>
-    		<li><p>1) Things in a picnic basket</p></li>
-    		<li><p>1) Things in a picnic basket</p></li>
-    		<li><p>1) Things in a picnic basket</p></li>
-    		<li><p>1) Things in a picnic basket</p></li>
-    		<li><p>1) Things in a picnic basket</p></li>
-    		<li><p>1) Things in a picnic basket</p></li>
-    		<li><p>1) Things in a picnic basket</p></li>
-    		<li><p>1) Things in a picnic basket</p></li>
-    		<li><p>1) Things in a picnic basket</p></li>
-    		<li><p>1) Things in a picnic basket</p></li>
-    	</ol>
+    <div id="Starter">
+	    <h2>Enter the name of the lobby you want to join<h2>
+	    <input type='text' id="lobby">
+	    <button onclick="createLobby()">CREATE</button>
+	    <button onclick="joinLobby()">JOIN</button>
+	    <script id="template" type="x-tmpl-mustache">
+	    	<div id={{ansID}} class="answers" style="color:green">
+	    	<br>
+	    		<ol>
+	    			<li>{{a1}}</li>
+	    			<li>{{a2}}</li>
+	    			<li>{{a3}}</li>
+	    			<li>{{a4}}</li>
+	    			<li>{{a5}}</li>
+	    			<li>{{a6}}</li>
+	    			<li>{{a7}}</li>
+	    			<li>{{a8}}</li>
+	    			<li>{{a9}}</li>
+	    			<li>{{a10}}</li>
+	    			<li>{{a11}}</li>
+	    			<li>{{a12}}</li>
+	    		</ol>
+	    	</div>
+
+	    </script>
+	    
     </div>
     <br style="float:clear">
-    <button type="text" onclick="sendAnswers()">Send</button>
-    <button type="text" onclick="test()">test</button>
+    <div id="inSes">
+	    <div class="u-ans" style ="display:inline-block; float:left" width="49%">
+	        <ol>
+	          <li><input type="text" id="1"> </li>
+	          <li><input type="text" id="2"> </li>
+	          <li><input type="text" id="3"> </li>
+	          <li><input type="text" id="4"> </li>
+	          <li><input type="text" id="5"> </li>
+	          <li><input type="text" id="6"> </li>
+	          <li><input type="text" id="7"> </li>
+	          <li><input type="text" id="8"> </li>
+	          <li><input type="text" id="9"> </li>
+	          <li><input type="text" id="10"> </li>
+	          <li><input type="text" id="11"> </li>
+	          <li><input type="text" id="12"> </li>
+	        </ol>
+	    </div>
+	    <div class="cat" style ="display:inline-block; float:left" width="49%">
+	    	<ol>
+	    		<li><p>1) Things in a picnic basket</p></li>
+	    		<li><p>1) Things in a picnic basket</p></li>
+	    		<li><p>1) Things in a picnic basket</p></li>
+	    		<li><p>1) Things in a picnic basket</p></li>
+	    		<li><p>1) Things in a picnic basket</p></li>
+	    		<li><p>1) Things in a picnic basket</p></li>
+	    		<li><p>1) Things in a picnic basket</p></li>
+	    		<li><p>1) Things in a picnic basket</p></li>
+	    		<li><p>1) Things in a picnic basket</p></li>
+	    		<li><p>1) Things in a picnic basket</p></li>
+	    		<li><p>1) Things in a picnic basket</p></li>
+	    		<li><p>1) Things in a picnic basket</p></li>
+	    	</ol>
+	    </div>
+	    <div id="test"></div>
+	    <br style="float:clear">
+	    <button type="text" onclick="sendAnswers()">Send</button>
+	    <button type="text" onclick="test()">test</button>
+    </div>
   </body>
 </html>

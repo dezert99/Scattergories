@@ -18,7 +18,7 @@ player.save(null, {
 function joinLobby(){
   var ses = Parse.Object.extend("Session");
     var query = new Parse.Query(ses);
-    query.equalTo("Name", document.getElementById("lobby").value);
+    query.equalTo("sessionName", document.getElementById("lobby").value);
     query.include("Creator");
     query.include("Players");
     query.find({
@@ -26,7 +26,7 @@ function joinLobby(){
       console.log("Successfully retrieved " + results.length );
       // Do something with the returned Parse.Object values
       session = results[0];
-      player.set("ansID",session.get("Players").length);
+      player.set("ansID",session.get("userCount")+1);
       console.log("Set");
       console.log(session.get("Players").length);
       player.save(null, {
@@ -38,7 +38,7 @@ function joinLobby(){
           $(".error").show();
           console.log("Player failed to save. Error code: "+error.code);
         }
-      });      
+      });
       addPlayer(session,player);
       console.log("session joined: "+session.get("Name"));
       console.log("The creator is: "+session.get("Creator").get("Name"));
@@ -55,7 +55,7 @@ function sendAnswers(){
 	for(var x = 1; x<=12; x++){
 		answers.push(document.getElementById(""+x).value);
 	}
-	//var answers = [document.getElementById("1").value,document.getElementById("2").value,document.getElementById("3"),document.getElementById("4"),document.getElementById("5"),document.getElementById("6"),document.getElementById("7"),document.getElementById("8"),document.getElementById("9"),document.getElementById("10"),document.getElementById("11"),document.getElementById("12")];
+	answers.push(player.get("ansID"));
 	session.add("Answers", answers);
     session.save(null, {
       success: function(object) {
@@ -84,24 +84,37 @@ function createLobby() {
       }
 
       session.set("Creator", player);
-      session.set("Name", document.getElementById("lobby").value);
+      session.set("sessionName", document.getElementById("lobby").value);
       player.set("ansID",0);
       player.save(null, {
         success: function(object) {
-          $(".success").show();
+          //$(".success").show();
           console.log("Player saved...");
         },
         error: function(model, error) {
-          $(".error").show();
+          //$(".error").show();
           console.log("Player failed to save. Error code: "+error.code);
         }
       });      
-      addPlayer(session, player);     
+      addPlayer(session, player);
+      session.set("userCount",1);
+      session.save(null, {
+      	success: function(object){
+      		console.log("Session saved");
+      	},
+      	error: function(model, error){
+      		console.log("Session failed to save");
+      	}
+
+      })
+
     },
     error: function(error) {
       alert("Error: " + error.code + " " + error.message);
     }
   }); 
+	$("#Starter").hide(3);
+	$("#inSes").show(3);
 }
 function addPlayer(session, player){
       console.log("Creating session...");
@@ -137,6 +150,40 @@ function test(){
     }
   });  
 }
+function getAns(){
+	for(var x=0;x<session.get("Answers").length;x++){
+		var answers = session.get("Answers")[x];
+		var answerOBJ = {
+			a1:answers[0],
+			a2:answers[1],
+			a3:answers[2],
+			a4:answers[3],
+			a5:answers[4],
+			a6:answers[5],
+			a7:answers[6],
+			a8:answers[7],
+			a9:answers[8],
+			a10:answers[9],
+			a11:answers[10],
+			a12:answers[11]
+		}
+		var template = $("#template").html();
+		var html=Mustache.render(template, answerOBJ);
+		$("#test").append(html);
+	}
+}
+$(document).ready(function(){
+	var testing = {
+	a1:"1",
+	a2:"2",
+	a3:"3"
+	}
+	var template = $("#template").html();
+	var html=Mustache.render(template, testing);
+	$("#test").html(html);
+});
+
+
 // function sendAnswers(){
 //   var answers = [document.getElementById("1").value,
 //   document.getElementById("2").value,
